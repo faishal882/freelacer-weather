@@ -9,7 +9,7 @@ body {
 }
 
 .header-title {
-  padding: 10px;
+  padding: 1rem;
   margin: 0;
   color: #fff;
 }
@@ -36,7 +36,7 @@ section {
   outline: none;
   padding: 13px;
   box-shadow: rgb(42 40 65 / 12%) 0px 25px 10px;
-  font-size: 18px;
+  font-size: 1.1rem;
   color: black;
 }
 .search-button {
@@ -71,7 +71,7 @@ section {
   font-weight: 700;
 }
 .present-weather-data {
-  font-size: 17px;
+  font-size: 1rem;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
