@@ -6,9 +6,11 @@ var newVal = inputVal.value.trim();
 
 const searchBtn = document.querySelector(".btn");
 const city = document.querySelector(".city-input");
+const forecastContainer = document.querySelector(".future-weather");
 
 window.addEventListener("DOMContentLoaded", function () {
   setPresentWeatherData(weatherData);
+  displayFutureForecast(JSON.parse(localStorage.getItem("forecasts")).daily);
 });
 
 var weatherData = JSON.parse(localStorage.getItem("weather_data"));
@@ -21,14 +23,12 @@ searchBtn.addEventListener("click", function () {
       if (res.cod === "404") {
         alert(res.message);
       }
-      console.log(res.main.temp);
+      console.log(res.coord.lon);
       localStorage.setItem("weather_data", JSON.stringify(res));
       weatherData = res;
       city.value = "";
       setPresentWeatherData(res);
-    })
-    .catch((err) => {
-      alert(err.message);
+      forecastingData(res.coord.lat, res.coord.lon);
     });
 });
 
@@ -44,6 +44,47 @@ function setPresentWeatherData(data) {
   Temp.innerHTML = `${data.main.temp} F`;
   Humidity.innerHTML = `${data.main.humidity}%`;
   Wind.innerHTML = `${data.wind.speed} m/s`;
+}
+
+// FETCH FORECSATING DATA
+function forecastingData(lat, lon) {
+  fetch(
+    `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&exclude=current,hourly,minutely,alerts&units=metric&appid=${apiKey}`
+  )
+    .then((res) => res.json())
+    .then((res) => {
+      console.log(res.daily);
+      displayFutureForecast(res.daily);
+      localStorage.setItem("forecasts", JSON.stringify(res));
+    });
+}
+
+// FUTURE WEATHER FORECASTING
+function displayFutureForecast(forecasts) {
+  let displayForecast = forecasts.map(function (forecast) {
+    return `<div class="future-weather-card">
+            <div class="future-weather-data">
+              <p>Date</p>
+              <p id="future-weather-date">${moment(forecast.dt * 1000).format(
+                "DD/MM/YYYY"
+              )}</p>
+            </div>
+            <div class="future-weather-data">
+              <p>Temperature</p>
+              <p id="future-weather-temp">${forecast.temp.day} F</p>
+            </div>
+            <div class="future-weather-data">
+              <p>Humidity</p>
+              <p id="future-weather-humidity">${forecast.humidity}%</p>
+            </div>
+            <div class="future-weather-data">
+              <p>Wind Speed</p>
+              <p id="future-weather-wind">${forecast.wind_speed} m/s</p>
+            </div>
+          </div>`;
+  });
+  displayItem = displayForecast.join("");
+  forecastContainer.innerHTML = displayItem;
 }
 
 // searchBtn.addEventListener("click", function (event) {
