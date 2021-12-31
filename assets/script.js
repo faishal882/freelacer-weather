@@ -4,18 +4,26 @@ const apiKey = "b2e887db731c59a60df2e26e8ec1483b";
 // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
 const searchBtn = document.querySelector(".btn");
-const city = document.querySelector(".city-input");
+const city = document.getElementById("cityInput");
 const forecastContainer = document.querySelector(".future-weather");
 
 window.addEventListener("DOMContentLoaded", function () {
   setPresentWeatherData(weatherData);
   displayFutureForecast(JSON.parse(localStorage.getItem("forecasts")).daily);
-  displayHistory();
+  displayHistory(history_data);
 });
 
+var history_data = JSON.parse(localStorage.getItem("history")) || [];
 searchBtn.addEventListener("click", function () {
   fetchCurrentData(city.value, apiKey);
-  city.value = "";
+  if (city.value) {
+    if (!history_data.includes(city.value)) {
+      history_data.push(city.value);
+      localStorage.setItem("history", JSON.stringify(history_data));
+      displayHistory(history_data);
+    }
+    city.value = "";
+  }
 });
 
 // FETCH CURRENT WEATHER DATA
@@ -23,7 +31,6 @@ var weatherData =
   JSON.parse(localStorage.getItem("weather_data")) ||
   fetchCurrentData("Aligarh", apiKey);
 
-var history_data = [];
 function fetchCurrentData(city, ApiKey) {
   fetch(
     `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${ApiKey}`
@@ -100,7 +107,11 @@ function displayFutureForecast(forecasts) {
 const historyContainer = document.querySelector(".search-history-data");
 
 function displayHistory(history) {
-  console.log("history");
+  let displayHistory = history.map(function (data) {
+    return ` <p class="history-data">${data}</p>`;
+  });
+  displayItem = displayHistory.join("");
+  historyContainer.innerHTML = displayItem;
 }
 
 // searchBtn.addEventListener("click", function (event) {

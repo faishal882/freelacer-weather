@@ -67,6 +67,9 @@ section {
   border-radius: 10px;
   color: black;
 }
+.history-data {
+  margin: 0;
+}
 
 .weather-data {
   width: 80%;
