@@ -29,7 +29,7 @@ searchBtn.addEventListener("click", function () {
 // FETCH CURRENT WEATHER DATA
 var weatherData =
   JSON.parse(localStorage.getItem("weather_data")) ||
-  fetchCurrentData("Aligarh", apiKey);
+  fetchCurrentData("Delhi", apiKey);
 
 function fetchCurrentData(city, ApiKey) {
   fetch(
