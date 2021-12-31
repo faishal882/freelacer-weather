@@ -1,7 +1,6 @@
 const apiKey = "b2e887db731c59a60df2e26e8ec1483b";
-var inputVal = document.getElementById("cityInput");
-var newVal = inputVal.value.trim();
-
+// var inputVal = document.getElementById("cityInput");
+// var newVal = inputVal.value.trim();
 // const url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`;
 
 const searchBtn = document.querySelector(".btn");
@@ -11,12 +10,23 @@ const forecastContainer = document.querySelector(".future-weather");
 window.addEventListener("DOMContentLoaded", function () {
   setPresentWeatherData(weatherData);
   displayFutureForecast(JSON.parse(localStorage.getItem("forecasts")).daily);
+  displayHistory();
 });
 
-var weatherData = JSON.parse(localStorage.getItem("weather_data"));
 searchBtn.addEventListener("click", function () {
+  fetchCurrentData(city.value, apiKey);
+  city.value = "";
+});
+
+// FETCH CURRENT WEATHER DATA
+var weatherData =
+  JSON.parse(localStorage.getItem("weather_data")) ||
+  fetchCurrentData("Aligarh", apiKey);
+
+var history_data = [];
+function fetchCurrentData(city, ApiKey) {
   fetch(
-    `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&units=metric&appid=${apiKey}`
+    `https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${ApiKey}`
   )
     .then((res) => res.json())
     .then((res) => {
@@ -26,24 +36,9 @@ searchBtn.addEventListener("click", function () {
       console.log(res.coord.lon);
       localStorage.setItem("weather_data", JSON.stringify(res));
       weatherData = res;
-      city.value = "";
       setPresentWeatherData(res);
       forecastingData(res.coord.lat, res.coord.lon);
     });
-});
-
-// PRESENT WEATHER DATA
-const cityName = document.getElementById("present-weather-city");
-const presentDate = document.getElementById("present-weather-date");
-const Temp = document.getElementById("present-weather-temp");
-const Humidity = document.getElementById("present-weather-humidity");
-const Wind = document.getElementById("present-weather-wind");
-function setPresentWeatherData(data) {
-  cityName.innerHTML = data.name;
-  presentDate.innerHTML = moment().format("DD/MM/YYYY");
-  Temp.innerHTML = `${data.main.temp} F`;
-  Humidity.innerHTML = `${data.main.humidity}%`;
-  Wind.innerHTML = `${data.wind.speed} m/s`;
 }
 
 // FETCH FORECSATING DATA
@@ -59,7 +54,21 @@ function forecastingData(lat, lon) {
     });
 }
 
-// FUTURE WEATHER FORECASTING
+// DISPLAY WEATHER DATA
+const cityName = document.getElementById("present-weather-city");
+const presentDate = document.getElementById("present-weather-date");
+const Temp = document.getElementById("present-weather-temp");
+const Humidity = document.getElementById("present-weather-humidity");
+const Wind = document.getElementById("present-weather-wind");
+function setPresentWeatherData(data) {
+  cityName.innerHTML = data.name;
+  presentDate.innerHTML = moment().format("DD/MM/YYYY");
+  Temp.innerHTML = `${data.main.temp} C`;
+  Humidity.innerHTML = `${data.main.humidity}%`;
+  Wind.innerHTML = `${data.wind.speed} m/s`;
+}
+
+// DISPLAY WEATHER FORECASTING
 function displayFutureForecast(forecasts) {
   let displayForecast = forecasts.map(function (forecast) {
     return `<div class="future-weather-card">
@@ -71,7 +80,7 @@ function displayFutureForecast(forecasts) {
             </div>
             <div class="future-weather-data">
               <p>Temperature</p>
-              <p id="future-weather-temp">${forecast.temp.day} F</p>
+              <p id="future-weather-temp">${forecast.temp.day} C</p>
             </div>
             <div class="future-weather-data">
               <p>Humidity</p>
@@ -85,6 +94,13 @@ function displayFutureForecast(forecasts) {
   });
   displayItem = displayForecast.join("");
   forecastContainer.innerHTML = displayItem;
+}
+
+// SEARCH HISTORY
+const historyContainer = document.querySelector(".search-history-data");
+
+function displayHistory(history) {
+  console.log("history");
 }
 
 // searchBtn.addEventListener("click", function (event) {

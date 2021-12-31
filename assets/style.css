@@ -52,6 +52,22 @@ section {
   cursor: pointer;
 }
 
+.search-history {
+  text-align: center;
+  font-size: 1.5rem;
+}
+.search-history-data {
+  font-size: 1.3rem;
+  text-align: left;
+  background: #fff;
+  padding: 10px;
+  margin: 20px;
+  margin-top: -10px;
+  box-shadow: rgb(42 40 65 / 12%) 0px 25px 10px;
+  border-radius: 10px;
+  color: black;
+}
+
 .weather-data {
   width: 80%;
   height: 100%;
@@ -84,6 +100,7 @@ section {
   width: 60%;
   display: grid;
   grid-template-columns: repeat(2, 1fr);
+  padding: 15px;
 }
 .future-weather-card {
   background: #f3f4f7;
@@ -92,7 +109,7 @@ section {
   color: black;
   font-weight: 500;
   padding: 10px;
-  margin: 20px;
+  margin: 5px;
 }
 .future-weather-data {
   font-size: 1rem;
