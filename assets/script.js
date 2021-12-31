@@ -82,13 +82,13 @@ function displayFutureForecast(forecasts) {
     if (forecast.uvi >= 0 && forecast.uvi <= 2) {
       color = "green";
     }
-    if (forecast.uvi >= 3 && forecast.uvi <= 5) {
+    if (forecast.uvi > 2 && forecast.uvi <= 5) {
       color = "yellow";
     }
-    if (forecast.uvi >= 6 && forecast.uvi <= 7) {
+    if (forecast.uvi > 5 && forecast.uvi <= 7) {
       color = "orange";
     }
-    if (forecast.uvi >= 8 && forecast.uvi <= 10) {
+    if (forecast.uvi > 7 && forecast.uvi <= 10) {
       color = "red";
     }
     if (forecast.uvi > 11) {
