@@ -78,6 +78,23 @@ function setPresentWeatherData(data) {
 // DISPLAY WEATHER FORECASTING
 function displayFutureForecast(forecasts) {
   let displayForecast = forecasts.map(function (forecast) {
+    var color = "white";
+    if (forecast.uvi >= 0 && forecast.uvi <= 2) {
+      color = "green";
+    }
+    if (forecast.uvi >= 3 && forecast.uvi <= 5) {
+      color = "yellow";
+    }
+    if (forecast.uvi >= 6 && forecast.uvi <= 7) {
+      color = "orange";
+    }
+    if (forecast.uvi >= 8 && forecast.uvi <= 10) {
+      color = "red";
+    }
+    if (forecast.uvi > 11) {
+      color = "violet";
+    }
+
     return `<div class="future-weather-card">
             <div style="text-align: center; background: #fff;" class="icon">
               <img
@@ -104,6 +121,10 @@ function displayFutureForecast(forecasts) {
             <div class="future-weather-data">
               <p>Wind Speed</p>
               <p id="future-weather-wind">${forecast.wind_speed} m/s</p>
+            </div>
+            <div class="future-weather-data" style="background: ${color};">
+              <p>UV Index</p>
+              <p id="future-weather-wind">${forecast.uvi}</p>
             </div>
           </div>`;
   });
