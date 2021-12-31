@@ -79,6 +79,14 @@ function setPresentWeatherData(data) {
 function displayFutureForecast(forecasts) {
   let displayForecast = forecasts.map(function (forecast) {
     return `<div class="future-weather-card">
+            <div style="text-align: center; background: #fff;" class="icon">
+              <img
+                src="http://openweathermap.org/img/wn/${
+                  forecast.weather[0].icon
+                }@2x.png"
+                alt="icon"
+              />
+            </div>
             <div class="future-weather-data">
               <p>Date</p>
               <p id="future-weather-date">${moment(forecast.dt * 1000).format(
